@@ -31,7 +31,7 @@ except Exception as e:
     print("💡 Проверьте, что вы дали права 'Редактор' email-адресу из вашего JSON-ключа.")
     exit(1)
 
-# 2. Парсинг RSS-ленты (намного надежнее, чем HTML-парсинг)
+# 2. Парсинг RSS-ленты
 url = "https://kostroma.today/feed/"
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
@@ -53,8 +53,12 @@ except ET.ParseError as e:
 items = root.findall('.//item')
 print(f"🔍 Найдено всего новостей в ленте: {len(items)}")
 
-# Ключевые слова для фильтрации событий
-keywords = ['конкурс', 'фестиваль', 'праздник', 'ярмарка', 'день города', 'забег', 'турнир', 'акция', 'мероприятие', 'выставка']
+# Ключевые слова для фильтрации событий (расширенный список)
+keywords = [
+    'конкурс', 'фестиваль', 'праздник', 'ярмарка', 'день города', 'забег', 
+    'турнир', 'акция', 'мероприятие', 'выставка', 'форум', 'квест', 'гуляния'
+]
+
 added_count = 0
 today_str = datetime.now().strftime("%d.%m.%Y %H:%M")
 
@@ -63,25 +67,31 @@ for item in items:
     link = item.find('link').text if item.find('link') is not None else ""
     pub_date = item.find('pubDate').text if item.find('pubDate') is not None else "Дата не указана"
     
-    # Проверяем наличие ключевых слов (в нижнем регистре)
-    title_lower = title.lower()
-    matched_keywords = [kw for kw in keywords if kw in title_lower]
+    # Получаем описание новости (там часто бывают ключевые слова)
+    description = item.find('description')
+    desc_text = description.text.lower() if description is not None and description.text else ""
+    
+    # Проверяем наличие ключевых слов в заголовке ИЛИ в описании
+    text_to_check = (title.lower() + " " + desc_text)
+    matched_keywords = [kw for kw in keywords if kw in text_to_check]
     
     if matched_keywords:
-        print(f"  ➕ Найдено совпадение: '{title}' (ключевые слова: {', '.join(matched_keywords)})")
+        print(f"  ➕ Найдено совпадение: '{title[:50]}...' (ключевые слова: {', '.join(matched_keywords)})")
         
         # Генерируем идею для акции на основе контекста
         promo_idea = "Стандартный квиз / VR-тур / Консультация"
-        if 'город' in title_lower or 'день' in title_lower:
+        if 'город' in text_to_check or 'день' in text_to_check:
             promo_idea = "Акция 'Город для жизни' + VR-тур по новостройкам"
-        elif 'спорт' in title_lower or 'забег' in title_lower:
+        elif 'спорт' in text_to_check or 'забег' in text_to_check:
             promo_idea = "Акция 'Здоровая семья' + спонсорство зоны отдыха"
-        elif 'студент' in title_lower or 'вуз' in title_lower or 'школь' in title_lower:
+        elif 'студент' in text_to_check or 'вуз' in text_to_check or 'школь' in text_to_check:
             promo_idea = "Лекторий 'Первый старт' + скидка на услуги"
-        elif 'бизнес' in title_lower or 'предприниматель' in title_lower:
+        elif 'бизнес' in text_to_check or 'предприниматель' in text_to_check:
             promo_idea = "Спецпредложение для ИП и самозанятых"
+        elif 'конкурс' in text_to_check or 'выставка' in text_to_check:
+            promo_idea = "Спонсорство призового фонда + брендирование зоны"
             
-        row = [today_str, title, pub_date, "Кострома", link, promo_idea]
+        row = [today_str, title.strip(), pub_date.strip(), "Кострома", link, promo_idea]
         try:
             worksheet.append_row(row)
             added_count += 1
