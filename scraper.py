@@ -43,20 +43,19 @@ except Exception as e:
 # ============================================================
 rss_sources = [
     # --- Проверенные, широкий охват СМИ ---
-    {"url": "https://kostroma.bezformata.com/rss.xml", "name": "БезФормата — все новости Костромской области", "reliable": True},
-    {"url": "https://kostroma.bezformata.com/rsstop.xml", "name": "БезФормата — главные новости", "reliable": True},
+    {"url": "https://kostroma.bezformata.com/rss", "name": "БезФормата — все новости Костромской области", "reliable": True},
+    {"url": "https://kostroma.bezformata.com/rsstop", "name": "БезФормата — главные новости", "reliable": True},
     {"url": "https://k1news.ru/news/rss/", "name": "K1NEWS — главный портал Костромы", "reliable": True},
     {"url": "https://kostroma.today/feed/", "name": "Кострома.Today (Городские события)", "reliable": True},
     {"url": "https://smi44.ru/rss", "name": "СМИ44 (Официальные пресс-релизы)", "reliable": True},
 
     # --- Государственные источники (нестабильны, оставлены с диагностикой) ---
-    {"url": "https://adm44.ru/rss.ashx", "name": "Правительство Костромской области", "reliable": False},
-    {"url": "https://grad.kostroma.gov.ru/rss.ashx", "name": "Администрация г. Костромы", "reliable": False},
-    {"url": "https://dsgh.kostroma.gov.ru/rss.ashx", "name": "Департамент строительства, ЖКХ и ТЭК", "reliable": False},
-    {"url": "https://dkko.kostroma.gov.ru/rss.ashx", "name": "Департамент культуры Костромской области", "reliable": False},
-    {"url": "https://don.kostroma.gov.ru/rss.ashx", "name": "Департамент образования и науки", "reliable": False},
-    {"url": "https://socdep.kostroma.gov.ru/rss.ashx", "name": "Департамент по труду и соцзащите", "reliable": False},
-    {"url": "https://dzo.kostroma.gov.ru/rss.ashx", "name": "Департамент здравоохранения", "reliable": False},
+    {"url": "https://adm44.ru/rss/", "name": "Правительство Костромской области", "reliable": False},
+    {"url": "https://grad.kostroma.gov.ru/rss", "name": "Администрация г. Костромы", "reliable": False},
+    {"url": "https://gkh.kostroma.gov.ru/rss", "name": "Департамент строительства, ЖКХ и ТЭК", "reliable": False},
+    {"url": "https://dkko.kostroma.gov.ru/rss", "name": "Департамент культуры Костромской области", "reliable": False},
+    {"url": "https://don.kostroma.gov.ru/rss", "name": "Департамент образования и науки", "reliable": False},
+    {"url": "https://socdep.kostroma.gov.ru/rss", "name": "Департамент по труду и соцзащите", "reliable": False},
     {"url": "https://44.mchs.gov.ru/deyatelnost/press-centr/novosti/rss", "name": "МЧС Костромской области (ярмарки, безопасность)", "reliable": False},
 ]
 
