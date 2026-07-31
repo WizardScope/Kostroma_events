@@ -1,10 +1,11 @@
 name: Kostroma Events Scraper for Etazhi
 
 on:
-  # Запуск по расписанию (каждый понедельник в 09:00 по МСК / 06:00 UTC)
+  # Запуск каждый день в 06:00 UTC (это 09:00 по московскому времени)
   schedule:
-    - cron: '0 6 * * 1'
-  # Возможность запустить вручную из вкладки Actions
+    - cron: '0 6 * * *'
+  
+  # Возможность запустить вручную в любой момент (оставляем для удобства)
   workflow_dispatch:
 
 jobs:
@@ -21,9 +22,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install gspread beautifulsoup4 requests
+          pip install gspread requests
 
       - name: Run Scraper
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          SHEET_ID: ${{ secrets.SHEET_ID }}
         run: python scraper.py
